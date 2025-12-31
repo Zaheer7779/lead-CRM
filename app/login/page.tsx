@@ -160,6 +160,21 @@ export default function LoginPage() {
                 {loading ? 'Signing in...' : 'Sign in'}
               </button>
             </div>
+
+            <div className="text-center">
+              <button
+                type="button"
+                onClick={() => {
+                  setStep('register');
+                  setError('');
+                  setPhone('');
+                  setPin('');
+                }}
+                className="text-sm text-blue-600 hover:text-blue-700 font-medium"
+              >
+                Don't have an account? Sign up
+              </button>
+            </div>
           </form>
         ) : (
           <form className="mt-8 space-y-6" onSubmit={handleRegister}>
