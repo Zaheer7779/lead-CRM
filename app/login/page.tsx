@@ -2,7 +2,6 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 type Step = 'login' | 'register';
 
@@ -116,15 +115,7 @@ export default function LoginPage() {
         {/* Logo and branding */}
         <div className="text-center">
           <div className="flex items-center justify-center mb-6">
-            <Image
-              src="/2xg-logo.png"
-              alt="2XG EARN Logo"
-              width={1345}
-              height={682}
-              priority
-              unoptimized
-              className="h-16 w-auto"
-            />
+            <img src="/2xg-logo.png" alt="2XG EARN Logo" className="h-16" />
           </div>
           <h2 className="text-center text-2xl font-bold text-gray-800">
             {step === 'login' ? 'Sign in' : 'Create Organization'}
