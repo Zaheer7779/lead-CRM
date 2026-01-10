@@ -35,10 +35,10 @@ export async function PUT(
     return apiResponse.error('Missing role in request body');
   }
 
-  const { role: newRole } = body;
+  const newRole = body.role as UserRole;
 
   // Validate role
-  const validRoles: UserRole[] = ['super_admin', 'manager', 'staff', 'sales_rep'];
+  const validRoles = ['super_admin', 'manager', 'staff', 'sales_rep'] as const;
   if (!validRoles.includes(newRole)) {
     return apiResponse.error('Invalid role');
   }
