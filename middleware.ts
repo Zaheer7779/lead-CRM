@@ -10,8 +10,6 @@ const publicRoutes = [
   '/api/auth/verify-otp',
   '/api/auth/register',
   '/api/customers',
-  '/api/leads/check-invoice',
-  '/api/leads/update-review-status',
   '/api/organization/logo',
 ];
 

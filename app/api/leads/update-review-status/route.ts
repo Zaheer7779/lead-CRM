@@ -9,6 +9,9 @@ export async function PUT(request: NextRequest) {
 
     // Get the user ID from headers (set by middleware)
     const userId = request.headers.get('x-user-id');
+    const organizationId = request.headers.get('x-organization-id');
+
+    console.log('📝 Update review status request:', { invoiceNo, reviewStatus, userId, organizationId });
 
     // Validate inputs
     if (!invoiceNo) {
@@ -25,6 +28,32 @@ export async function PUT(request: NextRequest) {
       );
     }
 
+    // First, check if the review_status column exists by trying to query it
+    const { data: checkLead, error: checkError } = await supabaseAdmin
+      .from('leads')
+      .select('id, review_status, reviewed_by')
+      .eq('invoice_no', invoiceNo)
+      .eq('status', 'win')
+      .maybeSingle();
+
+    if (checkError) {
+      console.error('❌ Database error (column may not exist):', checkError);
+      return NextResponse.json<APIResponse>(
+        {
+          success: false,
+          error: `Database schema error: ${checkError.message}. Please run the migration SQL file first.`
+        },
+        { status: 500 }
+      );
+    }
+
+    if (!checkLead) {
+      return NextResponse.json<APIResponse>(
+        { success: false, error: 'Lead not found or not a WIN lead' },
+        { status: 404 }
+      );
+    }
+
     // Prepare update data
     const updateData: any = {
       review_status: reviewStatus,
@@ -38,7 +67,7 @@ export async function PUT(request: NextRequest) {
       updateData.reviewed_by = null;
     }
 
-    // Update the lead's review status (no organization_id check needed, invoice_no is unique)
+    // Update the lead's review status
     const { data: lead, error } = await supabaseAdmin
       .from('leads')
       .update(updateData)
@@ -48,29 +77,24 @@ export async function PUT(request: NextRequest) {
       .single();
 
     if (error) {
-      console.error('Error updating review status:', error);
+      console.error('❌ Error updating review status:', error);
       return NextResponse.json<APIResponse>(
-        { success: false, error: 'Failed to update review status' },
+        { success: false, error: `Failed to update review status: ${error.message}` },
         { status: 500 }
       );
     }
 
-    if (!lead) {
-      return NextResponse.json<APIResponse>(
-        { success: false, error: 'Lead not found' },
-        { status: 404 }
-      );
-    }
+    console.log('✅ Review status updated successfully');
 
     return NextResponse.json<APIResponse>({
       success: true,
       data: lead,
       message: 'Review status updated successfully',
     });
-  } catch (error) {
-    console.error('Update review status error:', error);
+  } catch (error: any) {
+    console.error('❌ Update review status error:', error);
     return NextResponse.json<APIResponse>(
-      { success: false, error: 'Internal server error' },
+      { success: false, error: `Internal server error: ${error?.message || 'Unknown error'}` },
       { status: 500 }
     );
   }

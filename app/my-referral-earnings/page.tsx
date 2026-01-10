@@ -25,7 +25,7 @@ export default function MyReferralEarningsPage() {
     }
   };
 
-  const total = leads.reduce((sum, l) => sum + (l.incentive_amount || 0), 0);
+  const total = 0; // Always show ₹0 as total
 
   if (loading) return <div className="p-10 text-center text-gray-500">Loading...</div>;
 
@@ -44,7 +44,7 @@ export default function MyReferralEarningsPage() {
               <tr>
                 <th className="p-4 text-xs font-bold text-gray-400 uppercase">Customer</th>
                 <th className="p-4 text-xs font-bold text-gray-400 uppercase">Invoice</th>
-                <th className="p-4 text-xs font-bold text-gray-400 uppercase text-right">Incentive</th>
+                <th className="p-4 text-xs font-bold text-gray-400 uppercase text-right">Earning</th>
               </tr>
             </thead>
             <tbody className="divide-y">
@@ -52,7 +52,7 @@ export default function MyReferralEarningsPage() {
                 <tr key={l.id} className="hover:bg-green-50">
                   <td className="p-4 font-bold text-gray-900">{l.customer_name}</td>
                   <td className="p-4 text-gray-500">{l.invoice_no}</td>
-                  <td className="p-4 text-right font-bold text-purple-700">₹{l.incentive_amount || 0}</td>
+                  <td className="p-4 text-right font-bold text-purple-700">₹0</td>
                 </tr>
               ))}
             </tbody>
