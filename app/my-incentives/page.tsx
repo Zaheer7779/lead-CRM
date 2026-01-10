@@ -161,7 +161,7 @@ export default function MyIncentivesPage() {
                       Category
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
-                      Lead Amount
+                      Amount
                     </th>
                     <th className="px-6 py-4 text-left text-sm font-semibold text-gray-700">
                       Date
