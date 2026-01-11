@@ -7,7 +7,7 @@ export async function GET(request: NextRequest) {
     const organizationId = request.headers.get('x-organization-id');
     const userRole = request.headers.get('x-user-role');
 
-    if (!organizationId || userRole !== 'admin') {
+    if (!organizationId || (userRole !== 'admin' && userRole !== 'manager')) {
       return NextResponse.json<APIResponse>(
         { success: false, error: 'Unauthorized' },
         { status: 401 }

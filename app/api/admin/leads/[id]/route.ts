@@ -16,7 +16,7 @@ export async function PATCH(
     const userRole = request.headers.get('x-user-role');
 
     // Verify admin role
-    if (userRole !== 'admin') {
+    if (userRole !== 'admin' && userRole !== 'manager') {
       return NextResponse.json(
         { success: false, error: 'Unauthorized. Only admins can update incentives.' },
         { status: 403 }
@@ -102,7 +102,7 @@ export async function DELETE(
     const userRole = request.headers.get('x-user-role');
 
     // Verify admin role
-    if (userRole !== 'admin') {
+    if (userRole !== 'admin' && userRole !== 'manager') {
       return NextResponse.json(
         { success: false, error: 'Unauthorized. Only admins can delete leads.' },
         { status: 403 }

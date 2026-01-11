@@ -9,7 +9,7 @@ export async function GET(request: NextRequest) {
     const organizationId = request.headers.get('x-organization-id');
     const userRole = request.headers.get('x-user-role');
 
-    if (!organizationId || userRole !== 'admin') {
+    if (!organizationId || (userRole !== 'admin' && userRole !== 'manager')) {
       return NextResponse.json<APIResponse>(
         { success: false, error: 'Unauthorized' },
         { status: 401 }
@@ -55,7 +55,7 @@ export async function POST(request: NextRequest) {
       allHeaders: Object.fromEntries(request.headers.entries()),
     });
 
-    if (!organizationId || userRole !== 'admin') {
+    if (!organizationId || (userRole !== 'admin' && userRole !== 'manager')) {
       console.error('Team API - Unauthorized:', { organizationId, userRole });
       return NextResponse.json<APIResponse>(
         { success: false, error: 'Unauthorized - Missing organization or not admin' },

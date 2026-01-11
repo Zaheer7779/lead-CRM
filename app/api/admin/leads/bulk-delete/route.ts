@@ -12,7 +12,7 @@ export async function POST(request: NextRequest) {
     const userRole = request.headers.get('x-user-role');
 
     // Verify admin role
-    if (userRole !== 'admin') {
+    if (userRole !== 'admin' && userRole !== 'manager') {
       return NextResponse.json(
         { success: false, error: 'Unauthorized. Only admins can bulk delete leads.' },
         { status: 403 }
